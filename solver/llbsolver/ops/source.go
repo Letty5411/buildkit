@@ -2,6 +2,7 @@ package ops
 
 import (
 	"context"
+	"github.com/moby/buildkit/util"
 	"strings"
 	"sync"
 
@@ -63,6 +64,7 @@ func (s *sourceOp) instance(ctx context.Context) (source.SourceInstance, error) 
 }
 
 func (s *sourceOp) CacheMap(ctx context.Context, g session.Group, index int) (*solver.CacheMap, bool, error) {
+	util.LettyPrettyDump(s)
 	src, err := s.instance(ctx)
 	if err != nil {
 		return nil, false, err

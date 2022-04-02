@@ -2,6 +2,7 @@ package control
 
 import (
 	"context"
+	"github.com/moby/buildkit/util"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -235,6 +236,8 @@ func translateLegacySolveRequest(req *controlapi.SolveRequest) error {
 }
 
 func (c *Controller) Solve(ctx context.Context, req *controlapi.SolveRequest) (*controlapi.SolveResponse, error) {
+	util.LettyPrettyDump(req)
+
 	atomic.AddInt64(&c.buildCount, 1)
 	defer atomic.AddInt64(&c.buildCount, -1)
 
@@ -313,6 +316,7 @@ func (c *Controller) Solve(ctx context.Context, req *controlapi.SolveRequest) (*
 	if err != nil {
 		return nil, err
 	}
+	util.LettyPrettyDump(resp)
 	return &controlapi.SolveResponse{
 		ExporterResponse: resp.ExporterResponse,
 	}, nil
@@ -402,6 +406,7 @@ func (c *Controller) Status(req *controlapi.StatusRequest, stream controlapi.Con
 }
 
 func (c *Controller) Session(stream controlapi.Control_SessionServer) error {
+
 	bklog.G(stream.Context()).Debugf("session started")
 
 	conn, closeCh, opts := grpchijack.Hijack(stream)

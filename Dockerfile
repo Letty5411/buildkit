@@ -26,7 +26,8 @@ FROM --platform=$BUILDPLATFORM golang:1.17-alpine AS golatest
 
 # gobuild is base stage for compiling go/cgo
 FROM golatest AS gobuild-base
-RUN apk add --no-cache file bash clang lld pkgconfig git make
+RUN apk add --no-cache file bash clang lld pkgconfig git make gcc build-base
+RUN go install github.com/go-delve/delve/cmd/dlv@v1.7.3
 COPY --link --from=xx / /
 
 # runc source
@@ -50,6 +51,7 @@ RUN --mount=from=runc-src,src=/usr/src/runc,target=. --mount=target=/root/.cache
 
 FROM gobuild-base AS buildkit-base
 WORKDIR /src
+COPY --from=gobuild-base /usr/local/go/bin /usr/local/go/bin
 ENV GOFLAGS=-mod=vendor
 
 # scan the version/revision info
@@ -79,6 +81,8 @@ RUN --mount=target=. --mount=target=/root/.cache,type=cache \
   --mount=source=/tmp/.ldflags,target=/tmp/.ldflags,from=buildkit-version \
   CGO_ENABLED=0 xx-go build -ldflags "$(cat /tmp/.ldflags) -extldflags '-static'" -tags "osusergo netgo static_build seccomp ${BUILDKITD_TAGS}" -o /usr/bin/buildkitd ./cmd/buildkitd && \
   xx-verify --static /usr/bin/buildkitd
+COPY . /go/src/github.com/moby/buildkit
+ENV GOPATH /go
 
 FROM scratch AS binaries-linux-helper
 COPY --link --from=runc /usr/bin/runc /buildkit-runc
@@ -247,6 +251,7 @@ COPY --link --from=containerd /out/containerd* /usr/bin/
 COPY --link --from=cni-plugins /opt/cni/bin/bridge /opt/cni/bin/host-local /opt/cni/bin/loopback /opt/cni/bin/
 COPY --link hack/fixtures/cni.json /etc/buildkit/cni.json
 COPY --link --from=binaries / /usr/bin/
+COPY --link --from=gobuild-base /usr/local/go/bin /usr/local/go/bin
 
 FROM integration-tests-base AS integration-tests
 COPY . .
@@ -254,6 +259,7 @@ ENV BUILDKIT_RUN_NETWORK_INTEGRATION_TESTS=1 BUILDKIT_CNI_INIT_LOCK_PATH=/run/bu
 
 FROM integration-tests AS dev-env
 VOLUME /var/lib/buildkit
+RUN cp /src/Dockerfile.test /tmp/Dockerfile
 
 # Rootless mode.
 FROM tonistiigi/alpine:${ALPINE_VERSION} AS rootless

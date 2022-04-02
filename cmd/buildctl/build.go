@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"github.com/moby/buildkit/util"
 	"io"
 	"os"
 
@@ -249,6 +250,9 @@ func buildAction(clicontext *cli.Context) error {
 			solveOpt.FrontendAttrs["no-cache"] = ""
 		}
 	}
+
+	util.LettyPrettyDump(solveOpt)
+	util.LettyPrettyDump(def)
 
 	// not using shared context to not disrupt display but let is finish reporting errors
 	pw, err := progresswriter.NewPrinter(context.TODO(), os.Stderr, clicontext.String("progress"))

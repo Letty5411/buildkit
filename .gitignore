@@ -3,3 +3,4 @@ coverage
 release-out
 .certs
 .tmp
+vendor

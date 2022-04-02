@@ -2,6 +2,7 @@ package session
 
 import (
 	"context"
+	"github.com/moby/buildkit/util"
 	"net"
 	"net/http"
 	"strings"
@@ -44,6 +45,8 @@ func NewManager() (*Manager, error) {
 
 // HandleHTTPRequest handles an incoming HTTP request
 func (sm *Manager) HandleHTTPRequest(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	util.LettyPrettyDump(sm)
+	util.LettyPrettyDump(r)
 	hijacker, ok := w.(http.Hijacker)
 	if !ok {
 		return errors.New("handler does not support hijack")
@@ -88,6 +91,7 @@ func (sm *Manager) HandleHTTPRequest(ctx context.Context, w http.ResponseWriter,
 	conn.Write([]byte{})
 	resp.Write(conn)
 
+	util.LettyPrettyDump(resp)
 	return sm.handleConn(ctx, conn, r.Header)
 }
 

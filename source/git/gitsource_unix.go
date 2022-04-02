@@ -5,6 +5,7 @@ package git
 
 import (
 	"context"
+	"github.com/sirupsen/logrus"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -79,6 +80,7 @@ func gitMain() {
 func runProcessGroup(ctx context.Context, cmd *exec.Cmd) error {
 	cmd.Path = reexec.Self()
 	cmd.Args = append([]string{gitCmd}, cmd.Args...)
+	logrus.Debugf("runProcessGroup cmd:%#v", cmd)
 	if err := cmd.Start(); err != nil {
 		return err
 	}

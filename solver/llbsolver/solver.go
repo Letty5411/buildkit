@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"github.com/moby/buildkit/util"
 	"strings"
 	"time"
 
@@ -68,6 +69,8 @@ func New(wc *worker.Controller, f map[string]frontend.Frontend, cache solver.Cac
 		ResolveOpFunc: s.resolver(),
 		DefaultCache:  cache,
 	})
+
+	util.LettyPrettyDump(s)
 	return s, nil
 }
 
@@ -94,6 +97,9 @@ func (s *Solver) Bridge(b solver.Builder) frontend.FrontendLLBBridge {
 }
 
 func (s *Solver) Solve(ctx context.Context, id string, sessionID string, req frontend.SolveRequest, exp ExporterRequest, ent []entitlements.Entitlement) (*client.SolveResponse, error) {
+	util.LettyPrettyDump(req)
+	util.LettyPrettyDump(exp)
+
 	j, err := s.solver.NewJob(id)
 	if err != nil {
 		return nil, err
@@ -135,6 +141,8 @@ func (s *Solver) Solve(ctx context.Context, id string, sessionID string, req fro
 		}
 	}
 
+	util.LettyPrettyDump(res)
+
 	if res == nil {
 		res = &frontend.Result{}
 	}
@@ -158,6 +166,8 @@ func (s *Solver) Solve(ctx context.Context, id string, sessionID string, req fro
 		return nil, err
 	}
 
+	util.LettyPrettyDump(res)
+
 	if r := res.Ref; r != nil {
 		dtbi, err := buildinfo.Encode(ctx, res.Metadata, exptypes.ExporterBuildInfo, r.BuildSources())
 		if err != nil {
@@ -170,6 +180,7 @@ func (s *Solver) Solve(ctx context.Context, id string, sessionID string, req fro
 			res.Metadata[exptypes.ExporterBuildInfo] = dtbi
 		}
 	}
+	util.LettyPrettyDump(res)
 	if res.Refs != nil {
 		for k, r := range res.Refs {
 			if r == nil {
@@ -187,6 +198,7 @@ func (s *Solver) Solve(ctx context.Context, id string, sessionID string, req fro
 			}
 		}
 	}
+	util.LettyPrettyDump(res)
 
 	var exporterResponse map[string]string
 	if e := exp.Exporter; e != nil {

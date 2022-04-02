@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"github.com/sirupsen/logrus"
 	"sort"
 	"strings"
 
@@ -54,6 +55,7 @@ func mergeSources(llbSources map[string]string, frontendSources []binfotypes.Sou
 	// iterate and combine build sources
 	mbs := map[string]binfotypes.Source{}
 	for llbSource, pin := range llbSources {
+		logrus.Debugf("llbSource:", llbSource)
 		src, err := source.FromString(llbSource)
 		if err != nil {
 			return nil, err

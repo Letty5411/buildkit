@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"github.com/moby/buildkit/util"
 	"io"
 	"os"
 	"path/filepath"
@@ -205,6 +206,9 @@ func (c *Client) solve(ctx context.Context, def *llb.Definition, runGateway runG
 			frontendInputs[key] = def.ToPB()
 		}
 
+		util.LettyPrettyDump(pbd)
+		util.LettyPrettyDump(opt)
+		util.LettyPrettyDump(frontendInputs)
 		resp, err := c.controlClient().Solve(ctx, &controlapi.SolveRequest{
 			Ref:            ref,
 			Definition:     pbd,
