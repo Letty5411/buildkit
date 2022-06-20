@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile-upstream:1.4
 
 ARG RUNC_VERSION=v1.0.2
-ARG CONTAINERD_VERSION=v1.6.1
+ARG CONTAINERD_VERSION=v1.6.2
 # containerd v1.5 for integration tests
-ARG CONTAINERD_ALT_VERSION_15=v1.5.10
+ARG CONTAINERD_ALT_VERSION_15=v1.5.11
 # containerd v1.4 for integration tests
 ARG CONTAINERD_ALT_VERSION_14=v1.4.13
 # available targets: buildkitd, buildkitd.oci_only, buildkitd.containerd_only
@@ -22,7 +22,7 @@ RUN apk add --no-cache git
 # xx is a helper for cross-compilation
 FROM --platform=$BUILDPLATFORM tonistiigi/xx@sha256:1e96844fadaa2f9aea021b2b05299bc02fe4c39a92d8e735b93e8e2b15610128 AS xx
 
-FROM --platform=$BUILDPLATFORM golang:1.17-alpine AS golatest
+FROM --platform=$BUILDPLATFORM golang:1.18-alpine AS golatest
 
 # gobuild is base stage for compiling go/cgo
 FROM golatest AS gobuild-base
@@ -127,7 +127,7 @@ RUN git clone https://github.com/containerd/containerd.git containerd
 FROM gobuild-base AS containerd-base
 WORKDIR /go/src/github.com/containerd/containerd
 ARG TARGETPLATFORM
-ENV CGO_ENABLED=1 BUILDTAGS=no_btrfs
+ENV CGO_ENABLED=1 BUILDTAGS=no_btrfs GO111MODULE=off
 RUN xx-apk add musl-dev gcc && xx-go --wrap
 
 FROM containerd-base AS containerd

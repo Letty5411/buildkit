@@ -53,8 +53,13 @@ github.com/containerd/cgroups/stats/v1
 # github.com/containerd/console v1.0.3
 ## explicit
 github.com/containerd/console
+<<<<<<< HEAD
 # github.com/containerd/containerd v1.6.1
 ## explicit
+=======
+# github.com/containerd/containerd v1.6.3-0.20220401172941-5ff8fce1fcc6
+## explicit; go 1.17
+>>>>>>> ba9bbf42fc94b539e94b4e700444af7f3340063d
 github.com/containerd/containerd
 github.com/containerd/containerd/api/services/containers/v1
 github.com/containerd/containerd/api/services/content/v1
@@ -126,8 +131,13 @@ github.com/containerd/containerd/snapshots/proxy
 github.com/containerd/containerd/snapshots/storage
 github.com/containerd/containerd/sys
 github.com/containerd/containerd/version
+<<<<<<< HEAD
 # github.com/containerd/continuity v0.2.2
 ## explicit
+=======
+# github.com/containerd/continuity v0.2.3-0.20220330195504-d132b287edc8
+## explicit; go 1.13
+>>>>>>> ba9bbf42fc94b539e94b4e700444af7f3340063d
 github.com/containerd/continuity
 github.com/containerd/continuity/devices
 github.com/containerd/continuity/driver
@@ -142,8 +152,13 @@ github.com/containerd/fifo
 # github.com/containerd/fuse-overlayfs-snapshotter v1.0.2
 ## explicit
 github.com/containerd/fuse-overlayfs-snapshotter
+<<<<<<< HEAD
 # github.com/containerd/go-cni v1.1.3
 ## explicit
+=======
+# github.com/containerd/go-cni v1.1.4
+## explicit; go 1.13
+>>>>>>> ba9bbf42fc94b539e94b4e700444af7f3340063d
 github.com/containerd/go-cni
 # github.com/containerd/go-runc v1.0.0
 ## explicit
@@ -391,13 +406,18 @@ github.com/morikuni/aec
 # github.com/opencontainers/go-digest v1.0.0
 ## explicit
 github.com/opencontainers/go-digest
-# github.com/opencontainers/image-spec v1.0.2-0.20211117181255-693428a734f5
+# github.com/opencontainers/image-spec v1.0.3-0.20211202183452-c5a74bcca799
 ## explicit
 github.com/opencontainers/image-spec/identity
 github.com/opencontainers/image-spec/specs-go
 github.com/opencontainers/image-spec/specs-go/v1
+<<<<<<< HEAD
 # github.com/opencontainers/runc v1.1.0
 ## explicit
+=======
+# github.com/opencontainers/runc v1.1.1
+## explicit; go 1.16
+>>>>>>> ba9bbf42fc94b539e94b4e700444af7f3340063d
 github.com/opencontainers/runc/libcontainer/user
 # github.com/opencontainers/runtime-spec v1.0.3-0.20210326190908-1c3f411f0417
 ## explicit
