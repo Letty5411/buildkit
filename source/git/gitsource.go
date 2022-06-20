@@ -69,6 +69,7 @@ func (gs *gitSource) ID() string {
 
 // needs to be called with repo lock
 func (gs *gitSource) mountRemote(ctx context.Context, remote string, auth []string, g session.Group) (target string, release func(), retErr error) {
+	fmt.Printf("debug: remote=%s\n", remote)
 	sis, err := searchGitRemote(ctx, gs.cache, remote)
 	if err != nil {
 		return "", nil, errors.Wrapf(err, "failed to search metadata for %s", urlutil.RedactCredentials(remote))
